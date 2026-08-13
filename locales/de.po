@@ -1,0 +1,38 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Streampanel Banner\n"
+"Language: de\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Banner Vorschau"
+msgstr "Banner Vorschau"
+
+msgid "Format filtern:"
+msgstr "Format filtern:"
+
+msgid "Keine Bilder gefunden."
+msgstr "Keine Bilder gefunden."
+
+msgid "Code kopieren"
+msgstr "Code kopieren"
+
+msgid "Kopiert!"
+msgstr "Kopiert!"
+
+msgid "Sie dürfen alle hier aufgelisteten Grafiken aus rechtlichen Gründen ausschließlich per img-Tag einbinden auf Ihrer Seite."
+msgstr "Sie dürfen alle hier aufgelisteten Grafiken aus rechtlichen Gründen ausschließlich per img-Tag einbinden auf Ihrer Seite."
+
+msgid "Kontakt"
+msgstr "Kontakt"
+
+msgid "Cookies"
+msgstr "Cookies"
+
+msgid "Datenschutz"
+msgstr "Datenschutz"
+
+msgid "Impressum"
+msgstr "Impressum"
+
+msgid "SPCast Werbebanner"
+msgstr "SPCast Werbebanner"
