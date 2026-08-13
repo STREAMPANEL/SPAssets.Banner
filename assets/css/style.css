@@ -309,12 +309,14 @@ header {
     flex-direction: column;
     align-items: center;
     gap: 16px;
+    flex: 0 1 auto;
     width: 100%;
     backdrop-filter: blur(12px);
     transition: var(--transition);
     position: relative;
     overflow: hidden;
 }
+
 
 .card::before {
     content: '';
