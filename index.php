@@ -8,6 +8,7 @@ class SimplePoParser
 
     public static function parse(string $filePath) : array
     {
+
         $realPath   = realpath($filePath);
         $allowedDir = realpath(__DIR__ . '/locales');
 
@@ -104,7 +105,7 @@ function t(string $key)
 }
 
 // 2. Base URL & Dir Configuration
-$protocol     = (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['SERVER_PORT'] ?? 80) == 443 ? 'https://' : 'http://';
+$protocol = (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['SERVER_PORT'] ?? 80) == 443 ? 'https://' : 'http://';
 
 $rawHost      = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $cleanHost    = preg_replace('/[^a-zA-Z0-9.:-]/', '', $rawHost);
@@ -153,7 +154,6 @@ if (is_dir($imageDir)) {
     }
 }
 
-
 $preferredOrder = ['webp', 'avif', 'png', 'jpg', 'jpeg', 'gif'];
 usort($formatsAvailable, function ($a, $b) use ($preferredOrder) {
     $posA = array_search($a, $preferredOrder, true);
@@ -166,10 +166,10 @@ $sizes         = array_values($sizes);
 $defaultFormat = 'webp';
 
 // SEO Title and Meta Description
-$pageTitle       = t('Banner Vorschau') . ' | Streampanel';
+$pageTitle       = t('Banner Vorschau') . ' | STREAMPANEL';
 $metaDescription = $language === 'de'
-    ? 'STREAMPANEL Werbebanner und Grafiken von Streampanel zum Einbinden. Finden Sie offizielle Bannersets in verschiedenen Formaten.'
-    : 'STREAMPANEL promotional banners and graphics from Streampanel for integration. Find official banner sets in different formats.';
+    ? 'STREAMPANEL Werbebanner und Grafiken von STREAMPANEL zum Einbinden. Finden Sie offizielle Bannersets in verschiedenen Formaten.'
+    : 'STREAMPANEL promotional banners and graphics from STREAMPANEL for integration. Find official banner sets in different formats.';
 
 $ogImageFile = null;
 if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
@@ -226,7 +226,7 @@ if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
         {
           "@type": "Organization",
           "@id": "https://www.streampanel.net/#organization",
-          "name": "Streampanel",
+          "name": "STREAMPANEL",
           "url": "https://www.streampanel.net/",
           "logo": {
             "@type": "ImageObject",
@@ -237,14 +237,15 @@ if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
     }
     </script>
 
+
     <!-- Matomo Tag Manager -->
     <script>
-      var _mtm = window._mtm = window._mtm || [];
-      _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-      (function() {
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.async=true; g.src='https://pw.streampanel.net/js/container_KVNJAR2p_rewrite.js'; s.parentNode.insertBefore(g,s);
-      })();
+        var _mtm = window._mtm = window._mtm || [];
+        _mtm.push({ 'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start' });
+        (function () {
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.async = true; g.src = 'https://pw.streampanel.net/js/container_KVNJAR2p_rewrite.js'; s.parentNode.insertBefore(g, s);
+        })();
     </script>
     <!-- End Matomo Tag Manager -->
 </head>
@@ -263,7 +264,8 @@ if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
             <div class="header-actions">
                 <button class="btn-help" id="btn-open-help" aria-label="<?= htmlspecialchars(t('Anleitung')) ?>">
                     <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <span><?= htmlspecialchars(t('Anleitung')) ?></span>
                 </button>
@@ -372,7 +374,7 @@ if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
                     </section>
                 <?php endforeach; ?>
             <?php else: ?>
- ?>
+                ?>
 
                 <div class="empty-state">
                     <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

@@ -1,6 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Streampanel Banner\n"
+"Project-Id-Version: STREAMPANEL Banner\n"
+
 "Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
