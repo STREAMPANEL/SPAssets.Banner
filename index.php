@@ -163,7 +163,7 @@ usort($formatsAvailable, function ($a, $b) use ($preferredOrder) {
 $sizes = array_keys($imagesBySize);
 natsort($sizes);
 $sizes         = array_values($sizes);
-$defaultFormat = 'all';
+$defaultFormat = 'webp';
 
 // SEO Title and Meta Description
 $pageTitle       = t('Banner Vorschau') . ' | Streampanel';
@@ -314,7 +314,6 @@ if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
                         <label for="format-filter"><?= htmlspecialchars(t('Format filtern:')) ?></label>
                         <div class="select-wrapper">
                             <select id="format-filter">
-                                <option value="all" <?= $defaultFormat === 'all' ? 'selected' : '' ?>><?= htmlspecialchars($language === 'de' ? 'Alle Formate' : 'All formats') ?></option>
                                 <?php foreach ($formatsAvailable as $fmt): ?>
                                     <option value="<?= htmlspecialchars($fmt) ?>" <?= $fmt === $defaultFormat ? 'selected' : '' ?>>
                                         <?= strtoupper(htmlspecialchars($fmt)) ?>
@@ -325,6 +324,7 @@ if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
                     </div>
                 <?php endif; ?>
             </div>
+
 
             <!-- Banners Display Section -->
             <?php if ($sizes): ?>
