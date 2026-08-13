@@ -94,14 +94,26 @@ function t(string $key)
 
 // 2. Base URL & Dir Configuration
 $protocol     = (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['SERVER_PORT'] ?? 80) == 443 ? 'https://' : 'http://';
-$host         = $_SERVER['HTTP_HOST'] ?? 'localhost';
+
+$rawHost      = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$cleanHost    = preg_replace('/[^a-zA-Z0-9.:-]/', '', $rawHost);
+$allowedHosts = ['assets.streampanel.net', 'localhost', '127.0.0.1'];
+$hostParts    = explode(':', $cleanHost);
+$domain       = strtolower($hostParts[0]);
+
+if (in_array($domain, $allowedHosts, true)) {
+    $host = $cleanHost;
+} else {
+    $host = 'assets.streampanel.net';
+}
+
 $scriptName   = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
 $dir          = dirname($scriptName);
 $dirPath      = ($dir === '/' || $dir === '\\') ? '' : rtrim(str_replace('\\', '/', $dir), '/');
 $imageUrlBase = $protocol . $host . $dirPath . '/images/';
 $pageUrl      = $protocol . $host . ($_SERVER['REQUEST_URI'] ?? '/');
 
-$imageDir         = is_dir(__DIR__ . '/images') ? __DIR__ . '/images/' : '/home/svbzyjso/public_html/banner/images/';
+$imageDir         = __DIR__ . '/images/';
 $imagesBySize     = [];
 $formatsAvailable = [];
 
