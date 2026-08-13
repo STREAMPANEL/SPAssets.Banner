@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyBtns = document.querySelectorAll('.btn-copy');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
-    const lightboxClose = document.getElementById('lightbox-close');
     const lightboxCaption = document.getElementById('lightbox-caption');
 
     // Tab switching
@@ -19,7 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (targetGrid) {
                 targetGrid.classList.remove('hidden');
             }
-            filterImages(formatFilter.value);
+            if (formatFilter) {
+                filterImages(formatFilter.value);
+            }
         });
     });
 
@@ -47,19 +48,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Show/hide empty state
+        // Show/hide empty state safely using DOM methods
         let emptyState = activeGrid.querySelector('.empty-state');
         if (visibleCount === 0) {
             if (!emptyState) {
                 emptyState = document.createElement('div');
                 emptyState.className = 'empty-state';
-                const msg = activeGrid.dataset.noImagesMsg || 'No images found.';
-                emptyState.innerHTML = `
-                    <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <p>${msg}</p>
-                `;
+                
+                const svgNS = 'http://www.w3.org/2000/svg';
+                const svg = document.createElementNS(svgNS, 'svg');
+                svg.setAttribute('width', '40');
+                svg.setAttribute('height', '40');
+                svg.setAttribute('fill', 'none');
+                svg.setAttribute('stroke', 'currentColor');
+                svg.setAttribute('stroke-width', '2');
+                svg.setAttribute('viewBox', '0 0 24 24');
+
+                const path = document.createElementNS(svgNS, 'path');
+                path.setAttribute('stroke-linecap', 'round');
+                path.setAttribute('stroke-linejoin', 'round');
+                path.setAttribute('d', 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z');
+                
+                svg.appendChild(path);
+                emptyState.appendChild(svg);
+
+                const p = document.createElement('p');
+                p.textContent = activeGrid.dataset.noImagesMsg || 'No images found.';
+                emptyState.appendChild(p);
+
                 activeGrid.appendChild(emptyState);
             } else {
                 emptyState.classList.remove('hidden');
@@ -76,20 +92,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!code) return;
 
             navigator.clipboard.writeText(code).then(() => {
-                const originalHTML = btn.innerHTML;
+                const textSpan = btn.querySelector('span');
+                const originalText = textSpan ? textSpan.textContent : '';
                 const copiedText = btn.getAttribute('data-copied-text') || 'Copied!';
                 
                 btn.classList.add('copied');
-                btn.innerHTML = `
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>${copiedText}</span>
-                `;
+                if (textSpan) {
+                    textSpan.textContent = copiedText;
+                }
 
                 setTimeout(() => {
                     btn.classList.remove('copied');
-                    btn.innerHTML = originalHTML;
+                    if (textSpan) {
+                        textSpan.textContent = originalText;
+                    }
                 }, 2000);
             }).catch(err => {
                 console.error('Failed to copy text: ', err);
@@ -97,8 +113,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Unobtrusive Event Delegation for Lightbox
+    document.addEventListener('click', (e) => {
+        const img = e.target.closest('.image-container img');
+        if (img) {
+            const sizeName = img.getAttribute('data-size') || '';
+            showLightbox(img.src, sizeName);
+        }
+    });
+
     // Lightbox modal logic
-    window.showLightbox = function(src, sizeName) {
+    function showLightbox(src, sizeName) {
         if (!lightbox || !lightboxImg) return;
         lightboxImg.src = src;
         if (lightboxCaption) {
@@ -106,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         lightbox.classList.add('active');
         document.body.style.overflow = 'hidden';
-    };
+    }
 
     function hideLightbox() {
         if (!lightbox) return;
@@ -137,3 +162,4 @@ document.addEventListener('DOMContentLoaded', () => {
         filterImages(formatFilter.value);
     }
 });
+
