@@ -110,10 +110,17 @@ if (is_dir($imageDir)) {
     $files = scandir($imageDir);
     if ($files !== false) {
         foreach ($files as $file) {
-            if (preg_match('/^(\d+x\d+)_.*\.(jpg|jpeg|png|gif)$/i', $file, $m)) {
-                $size                  = $m[1];
-                $ext                   = strtolower($m[2]);
-                $imagesBySize[$size][] = ['file' => $file, 'ext' => $ext];
+            if (preg_match('/^(\d+[x-]\d+)_.*\.(jpg|jpeg|png|gif|webp|avif)$/i', $file, $m)) {
+                $size = str_replace('-', 'x', $m[1]);
+                $ext  = strtolower($m[2]);
+
+                $safeFile = preg_replace('/^(\d+)x(\d+)_/', '$1-$2_', $file);
+                if (! isset($imagesBySize[$size])) {
+                    $imagesBySize[$size] = [];
+                }
+                if (! isset($imagesBySize[$size][$safeFile])) {
+                    $imagesBySize[$size][$safeFile] = ['file' => $safeFile, 'ext' => $ext];
+                }
                 if (! in_array($ext, $formatsAvailable, true)) {
                     $formatsAvailable[] = $ext;
                 }
@@ -122,11 +129,19 @@ if (is_dir($imageDir)) {
     }
 }
 
-sort($formatsAvailable);
+
+$preferredOrder = ['webp', 'avif', 'png', 'jpg', 'jpeg', 'gif'];
+usort($formatsAvailable, function ($a, $b) use ($preferredOrder) {
+    $posA = array_search($a, $preferredOrder, true);
+    $posB = array_search($b, $preferredOrder, true);
+    return ($posA === false ? 99 : $posA) <=> ($posB === false ? 99 : $posB);
+});
 $sizes = array_keys($imagesBySize);
 natsort($sizes);
 $sizes         = array_values($sizes);
-$defaultFormat = in_array('png', $formatsAvailable, true) ? 'png' : ($formatsAvailable[0] ?? '');
+$defaultFormat = 'all';
+
+
 
 // SEO Title and Meta Description
 $pageTitle       = t('Banner Vorschau') . ' | Streampanel';
@@ -246,7 +261,7 @@ $metaDescription = $language === 'de'
                 <?php if ($sizes): ?>
                     <nav class="tabs-container" aria-label="Banner sizes">
                         <?php foreach ($sizes as $i => $sz): ?>
-                            <button class="tab-btn <?= $i === 0 ? 'active' : '' ?>" data-size="<?= htmlspecialchars($sz) ?>" id="tab-<?= htmlspecialchars($sz) ?>">
+                            <button class="tab-btn <?= $i === 0 ? 'active' : '' ?>" data-size="<?= htmlspecialchars($sz) ?>" id="sp-tab-<?= htmlspecialchars($sz) ?>">
                                 <?= htmlspecialchars($sz) ?>
                             </button>
                         <?php endforeach; ?>
@@ -259,7 +274,7 @@ $metaDescription = $language === 'de'
                         <label for="format-filter"><?= htmlspecialchars(t('Format filtern:')) ?></label>
                         <div class="select-wrapper">
                             <select id="format-filter">
-                                <option value="all"><?= htmlspecialchars($language === 'de' ? 'Alle Formate' : 'All formats') ?></option>
+                                <option value="all" <?= $defaultFormat === 'all' ? 'selected' : '' ?>><?= htmlspecialchars($language === 'de' ? 'Alle Formate' : 'All formats') ?></option>
                                 <?php foreach ($formatsAvailable as $fmt): ?>
                                     <option value="<?= htmlspecialchars($fmt) ?>" <?= $fmt === $defaultFormat ? 'selected' : '' ?>>
                                         <?= strtoupper(htmlspecialchars($fmt)) ?>
@@ -279,12 +294,14 @@ $metaDescription = $language === 'de'
                     list($width, $height) = explode('x', $sz);
                     $cardMaxWidth         = (int) $width + 42; // Dynamic padding
                     ?>
-                    <section class="grid-section <?= $i !== 0 ? 'hidden' : '' ?>" id="grid-<?= htmlspecialchars($sz) ?>" data-no-images-msg="<?= htmlspecialchars(t('Keine Bilder gefunden.')) ?>">
+                    <section class="grid-section <?= $i !== 0 ? 'hidden' : '' ?>" id="sp-grid-<?= htmlspecialchars($sz) ?>" data-no-images-msg="<?= htmlspecialchars(t('Keine Bilder gefunden.')) ?>">
+
                         <?php
 
                         foreach ($imagesBySize[$sz] as $img):
-                            $imgUrl    = htmlspecialchars($imageUrlBase . $img['file']);
-                            $embedCode = htmlspecialchars('<img src="' . $imageUrlBase . $img['file'] . '" alt="' . t('SPCast Werbebanner') . '">');
+                            $safeFile  = preg_replace('/^(\d+)x(\d+)_/', '$1-$2_', $img['file']);
+                            $imgUrl    = htmlspecialchars($imageUrlBase . $safeFile);
+                            $embedCode = htmlspecialchars('<img src="' . $imageUrlBase . $safeFile . '" alt="' . t('SPCast Werbebanner') . '">');
                             ?>
                             <div class="card" data-ext="<?= htmlspecialchars($img['ext']) ?>" style="max-width: <?= $cardMaxWidth ?>px;">
                                 <div class="image-container">

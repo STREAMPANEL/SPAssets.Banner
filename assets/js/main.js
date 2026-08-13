@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             grids.forEach(g => g.classList.add('hidden'));
 
             tab.classList.add('active');
-            const targetGrid = document.getElementById('grid-' + tab.dataset.size);
+            const targetGrid = document.getElementById('sp-grid-' + tab.dataset.size) || document.getElementById('grid-' + tab.dataset.size);
             if (targetGrid) {
                 targetGrid.classList.remove('hidden');
             }

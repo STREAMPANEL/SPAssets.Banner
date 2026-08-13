@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Example: images/468-60_01.png -> images/468x60_01.png
+    RewriteRule ^images/(\d+)-(\d+)_(.+)$ images/$1x$2_$3 [L]
+</IfModule>
