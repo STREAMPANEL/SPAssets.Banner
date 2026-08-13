@@ -15,13 +15,12 @@ Options -Indexes
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+    Header always set Content-Security-Policy "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; img-src * data: blob:; style-src 'self' 'unsafe-inline' https:; font-src 'self' https: data:; connect-src *; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
     Header always set X-Permitted-Cross-Domain-Policies "none"
     Header always set Cross-Origin-Opener-Policy "same-origin"
     Header always set Cross-Origin-Resource-Policy "cross-origin"
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
 </IfModule>
-
 
 <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg)$">
     <IfModule mod_headers.c>
