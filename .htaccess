@@ -1,6 +1,6 @@
 Options -Indexes
 
-<FilesMatch "(^\.|\.po$|\.env$|\.git)">
+<FilesMatch "(\.po|\.env|\.git)">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -10,28 +10,18 @@ Options -Indexes
     </IfModule>
 </FilesMatch>
 
-<LimitExcept GET HEAD>
-    <IfModule mod_authz_core.c>
-        Require all denied
-    </IfModule>
-    <IfModule !mod_authz_core.c>
-        Order allow,deny
-        Deny from all
-    </IfModule>
-</LimitExcept>
-
 <IfModule mod_headers.c>
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://www.streampanel.net; font-src 'self'; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
     Header always set X-Permitted-Cross-Domain-Policies "none"
     Header always set Cross-Origin-Opener-Policy "same-origin"
-    # Essential for Asset/Banner CDNs: allow external sites to embed images via <img>
     Header always set Cross-Origin-Resource-Policy "cross-origin"
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
 </IfModule>
+
 
 <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg)$">
     <IfModule mod_headers.c>
@@ -43,4 +33,3 @@ Options -Indexes
     RewriteEngine On
     RewriteRule ^images/(\d+)-(\d+)_(.+)$ images/$1x$2_$3 [L]
 </IfModule>
-
