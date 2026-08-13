@@ -8,11 +8,22 @@ class SimplePoParser
 
     public static function parse(string $filePath) : array
     {
+        $realPath   = realpath($filePath);
+        $allowedDir = realpath(__DIR__ . '/locales');
 
-        if (! file_exists($filePath)) {
+        if ($realPath === false || $allowedDir === false || strpos($realPath, $allowedDir) !== 0) {
             return [];
         }
-        $content      = file_get_contents($filePath);
+
+        if (! file_exists($realPath) || filesize($realPath) > 102400) {
+            return [];
+        }
+
+        $content = file_get_contents($realPath);
+        if ($content === false) {
+            return [];
+        }
+
         $lines        = explode("\n", $content);
         $translations = [];
         $currentId    = null;
@@ -65,12 +76,12 @@ class SimplePoParser
 $supportedLanguages = ['de', 'en'];
 $language           = 'de'; // Fallback default
 
-if (isset($_GET['lang']) && in_array($_GET['lang'], $supportedLanguages, true)) {
+if (isset($_GET['lang']) && is_string($_GET['lang']) && preg_match('/^[a-z]{2}$/', $_GET['lang']) && in_array($_GET['lang'], $supportedLanguages, true)) {
     $language = $_GET['lang'];
 } else {
     // Detect from Accept-Language HTTP header
     $acceptLang = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '';
-    if (! empty($acceptLang)) {
+    if (! empty($acceptLang) && is_string($acceptLang)) {
         $langs = explode(',', $acceptLang);
         foreach ($langs as $lang) {
             $langCode = strtolower(substr(trim($lang), 0, 2));
@@ -111,7 +122,8 @@ $scriptName   = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
 $dir          = dirname($scriptName);
 $dirPath      = ($dir === '/' || $dir === '\\') ? '' : rtrim(str_replace('\\', '/', $dir), '/');
 $imageUrlBase = $protocol . $host . $dirPath . '/images/';
-$pageUrl      = $protocol . $host . ($_SERVER['REQUEST_URI'] ?? '/');
+$requestPath  = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
+$pageUrl      = $protocol . $host . $requestPath;
 
 $imageDir         = __DIR__ . '/images/';
 $imagesBySize     = [];
@@ -153,13 +165,19 @@ natsort($sizes);
 $sizes         = array_values($sizes);
 $defaultFormat = 'all';
 
-
-
 // SEO Title and Meta Description
 $pageTitle       = t('Banner Vorschau') . ' | Streampanel';
 $metaDescription = $language === 'de'
     ? 'SPCast Werbebanner und Grafiken von Streampanel zum Einbinden. Finden Sie offizielle Bannersets in verschiedenen Formaten.'
     : 'SPCast promotional banners and graphics from Streampanel for integration. Find official banner sets in different formats.';
+
+$ogImageFile = null;
+if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
+    $firstCard = reset($imagesBySize[$sizes[0]]);
+    if (isset($firstCard['file'])) {
+        $ogImageFile = $firstCard['file'];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= htmlspecialchars($language) ?>">
@@ -179,8 +197,8 @@ $metaDescription = $language === 'de'
     <meta property="og:url" content="<?= htmlspecialchars($pageUrl) ?>">
     <meta property="og:title" content="<?= htmlspecialchars($pageTitle) ?>">
     <meta property="og:description" content="<?= htmlspecialchars($metaDescription) ?>">
-    <?php if ($sizes && isset($imagesBySize[$sizes[0]][0])): ?>
-        <meta property="og:image" content="<?= htmlspecialchars($imageUrlBase . $imagesBySize[$sizes[0]][0]['file']) ?>">
+    <?php if ($ogImageFile): ?>
+        <meta property="og:image" content="<?= htmlspecialchars($imageUrlBase . $ogImageFile) ?>">
     <?php endif; ?>
 
     <!-- Twitter -->
@@ -311,14 +329,12 @@ $metaDescription = $language === 'de'
                         <?php
 
                         foreach ($imagesBySize[$sz] as $img):
-                            $safeFile  = preg_replace('/^(\d+)x(\d+)_/', '$1-$2_', $img['file']);
-                            $imgUrl    = htmlspecialchars($imageUrlBase . $safeFile);
-                            $embedCode = htmlspecialchars('<img src="' . $imageUrlBase . $safeFile . '" alt="' . t('SPCast Werbebanner') . '">');
+                            $imgUrl    = htmlspecialchars($imageUrlBase . $img['file']);
+                            $embedCode = htmlspecialchars('<img src="' . $imageUrlBase . $img['file'] . '" alt="' . t('SPCast Werbebanner') . '">');
                             ?>
                             <div class="card" data-ext="<?= htmlspecialchars($img['ext']) ?>" style="max-width: <?= $cardMaxWidth ?>px;">
                                 <div class="image-container">
-                                    <img src="<?= $imgUrl ?>" alt="<?= htmlspecialchars(t('SPCast Werbebanner')) ?> <?= htmlspecialchars($sz) ?>" onclick="showLightbox(this.src, '<?= htmlspecialchars($sz) ?>')"
-                                        loading="lazy">
+                                    <img src="<?= $imgUrl ?>" alt="<?= htmlspecialchars(t('SPCast Werbebanner')) ?> <?= htmlspecialchars($sz) ?>" data-size="<?= htmlspecialchars($sz) ?>" loading="lazy">
                                 </div>
                                 <button class="btn-copy" data-code="<?= $embedCode ?>" data-copied-text="<?= htmlspecialchars(t('Kopiert!')) ?>"
                                     id="copy-btn-<?= htmlspecialchars(str_replace('.', '-', $img['file'])) ?>">
@@ -334,6 +350,7 @@ $metaDescription = $language === 'de'
                     </section>
                 <?php endforeach; ?>
             <?php else: ?>
+
                 <div class="empty-state">
                     <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round"
