@@ -150,10 +150,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Keyboard support (Escape to close lightbox)
+    // Help Modal Logic
+    const btnOpenHelp = document.getElementById('btn-open-help');
+    const helpModal = document.getElementById('help-modal');
+    const btnCloseHelp = document.getElementById('help-modal-close');
+    const btnCloseHelpFooter = document.getElementById('btn-close-help-footer');
+
+    function showHelpModal() {
+        if (!helpModal) return;
+        helpModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideHelpModal() {
+        if (!helpModal) return;
+        helpModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (btnOpenHelp) {
+        btnOpenHelp.addEventListener('click', showHelpModal);
+    }
+    if (btnCloseHelp) {
+        btnCloseHelp.addEventListener('click', hideHelpModal);
+    }
+    if (btnCloseHelpFooter) {
+        btnCloseHelpFooter.addEventListener('click', hideHelpModal);
+    }
+    if (helpModal) {
+        helpModal.addEventListener('click', (e) => {
+            if (e.target === helpModal) {
+                hideHelpModal();
+            }
+        });
+    }
+
+    // Keyboard support (Escape to close lightbox / help modal)
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && lightbox && lightbox.classList.contains('active')) {
-            hideLightbox();
+        if (e.key === 'Escape') {
+            if (lightbox && lightbox.classList.contains('active')) {
+                hideLightbox();
+            }
+            if (helpModal && helpModal.classList.contains('active')) {
+                hideHelpModal();
+            }
         }
     });
 
@@ -162,4 +202,5 @@ document.addEventListener('DOMContentLoaded', () => {
         filterImages(formatFilter.value);
     }
 });
+
 

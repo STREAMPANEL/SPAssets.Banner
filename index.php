@@ -247,31 +247,41 @@ if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
                 <div class="logo-subtitle">SPCast Official Branding Kit</div>
             </div>
 
-            <!-- Language Selector with Crisp Inline SVG Flags -->
-            <div class="lang-selector">
-                <a href="?lang=de" id="lang-switch-de" class="lang-btn <?= $language === 'de' ? 'active' : '' ?>" aria-label="Deutsch">
-                    <svg class="flag" viewBox="0 0 5 3" width="20" height="12">
-                        <rect width="5" height="1" y="0" fill="#000000" />
-                        <rect width="5" height="1" y="1" fill="#dd0000" />
-                        <rect width="5" height="1" y="2" fill="#ffce00" />
+            <!-- Header Actions: Language Selector & Help Button -->
+            <div class="header-actions">
+                <button class="btn-help" id="btn-open-help" aria-label="<?= htmlspecialchars(t('Anleitung')) ?>">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>DE</span>
-                </a>
-                <a href="?lang=en" id="lang-switch-en" class="lang-btn <?= $language === 'en' ? 'active' : '' ?>" aria-label="English">
-                    <svg class="flag" viewBox="0 0 60 30" width="20" height="10">
-                        <clipPath id="uk-flag-clip">
-                            <rect width="60" height="30" />
-                        </clipPath>
-                        <g clip-path="url(#uk-flag-clip)">
-                            <path d="M0 0h60v30H0z" fill="#012169" />
-                            <path d="M0 0l60 30M60 0L0 30" stroke="#fff" stroke-width="6" />
-                            <path d="M0 0l60 30M60 0L0 30" stroke="#c8102e" stroke-width="4" />
-                            <path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10" />
-                            <path d="M30 0v30M0 15h60" stroke="#c8102e" stroke-width="6" />
-                        </g>
-                    </svg>
-                    <span>EN</span>
-                </a>
+                    <span><?= htmlspecialchars(t('Anleitung')) ?></span>
+                </button>
+
+                <!-- Language Selector with Crisp Inline SVG Flags -->
+                <div class="lang-selector">
+                    <a href="?lang=de" id="lang-switch-de" class="lang-btn <?= $language === 'de' ? 'active' : '' ?>" aria-label="Deutsch">
+                        <svg class="flag" viewBox="0 0 5 3" width="20" height="12">
+                            <rect width="5" height="1" y="0" fill="#000000" />
+                            <rect width="5" height="1" y="1" fill="#dd0000" />
+                            <rect width="5" height="1" y="2" fill="#ffce00" />
+                        </svg>
+                        <span>DE</span>
+                    </a>
+                    <a href="?lang=en" id="lang-switch-en" class="lang-btn <?= $language === 'en' ? 'active' : '' ?>" aria-label="English">
+                        <svg class="flag" viewBox="0 0 60 30" width="20" height="10">
+                            <clipPath id="uk-flag-clip">
+                                <rect width="60" height="30" />
+                            </clipPath>
+                            <g clip-path="url(#uk-flag-clip)">
+                                <path d="M0 0h60v30H0z" fill="#012169" />
+                                <path d="M0 0l60 30M60 0L0 30" stroke="#fff" stroke-width="6" />
+                                <path d="M0 0l60 30M60 0L0 30" stroke="#c8102e" stroke-width="4" />
+                                <path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10" />
+                                <path d="M30 0v30M0 15h60" stroke="#c8102e" stroke-width="6" />
+                            </g>
+                        </svg>
+                        <span>EN</span>
+                    </a>
+                </div>
             </div>
         </header>
 
@@ -373,6 +383,55 @@ if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
             </div>
             <div class="lightbox-caption" id="lightbox-caption"></div>
         </div>
+
+        <!-- Help Modal for Guidance -->
+        <div class="help-modal" id="help-modal" role="dialog" aria-modal="true" aria-label="<?= htmlspecialchars(t('Anleitung')) ?>">
+            <div class="help-modal-card">
+                <button class="help-modal-close" id="help-modal-close" aria-label="<?= htmlspecialchars(t('Schließen')) ?>">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <div class="help-modal-header">
+                    <svg width="24" height="24" fill="none" stroke="var(--primary-color)" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h2><?= htmlspecialchars(t('Schritt-für-Schritt Einbindung')) ?></h2>
+                </div>
+                <div class="help-modal-body">
+                    <ol class="help-steps">
+                        <li>
+                            <span class="step-num">1</span>
+                            <div>
+                                <p><?= htmlspecialchars(t('1. Gewünschtes Bannerformat & Größe auswählen')) ?></p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="step-num">2</span>
+                            <div>
+                                <p><?= htmlspecialchars(t('2. Auf \'Code kopieren\' klicken')) ?></p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="step-num">3</span>
+                            <div>
+                                <p><?= htmlspecialchars(t('3. Den kopierten HTML-Code in den Quelltext Ihrer Website einfügen')) ?></p>
+                            </div>
+                        </li>
+                    </ol>
+                    <div class="help-note">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span><?= htmlspecialchars(t('Sie dürfen alle hier aufgelisteten Grafiken aus rechtlichen Gründen ausschließlich per img-Tag einbinden auf Ihrer Seite.')) ?></span>
+                    </div>
+                </div>
+                <div class="help-modal-footer">
+                    <button class="btn-primary" id="btn-close-help-footer"><?= htmlspecialchars(t('Schließen')) ?></button>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Footer Links -->
         <footer>

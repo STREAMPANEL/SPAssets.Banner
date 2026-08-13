@@ -36,3 +36,22 @@ msgstr "Impressum"
 
 msgid "SPCast Werbebanner"
 msgstr "SPCast Werbebanner"
+
+msgid "Anleitung"
+msgstr "Anleitung"
+
+msgid "Schritt-für-Schritt Einbindung"
+msgstr "Schritt-für-Schritt Einbindung"
+
+msgid "1. Gewünschtes Bannerformat & Größe auswählen"
+msgstr "1. Gewünschtes Bannerformat & Größe auswählen"
+
+msgid "2. Auf 'Code kopieren' klicken"
+msgstr "2. Auf 'Code kopieren' klicken"
+
+msgid "3. Den kopierten HTML-Code in den Quelltext Ihrer Website einfügen"
+msgstr "3. Den kopierten HTML-Code in den Quelltext Ihrer Website einfügen"
+
+msgid "Schließen"
+msgstr "Schließen"
+

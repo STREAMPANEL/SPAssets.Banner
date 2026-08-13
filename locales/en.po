@@ -36,3 +36,22 @@ msgstr "Legal Notice"
 
 msgid "SPCast Werbebanner"
 msgstr "SPCast Advertising Banner"
+
+msgid "Anleitung"
+msgstr "Instructions"
+
+msgid "Schritt-für-Schritt Einbindung"
+msgstr "Step-by-Step Integration"
+
+msgid "1. Gewünschtes Bannerformat & Größe auswählen"
+msgstr "1. Choose your desired banner format & size"
+
+msgid "2. Auf 'Code kopieren' klicken"
+msgstr "2. Click 'Copy Code'"
+
+msgid "3. Den kopierten HTML-Code in den Quelltext Ihrer Website einfügen"
+msgstr "3. Paste the copied HTML code into your website's source code"
+
+msgid "Schließen"
+msgstr "Close"
+
