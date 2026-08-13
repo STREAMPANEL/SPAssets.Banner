@@ -34,8 +34,9 @@ msgstr "Privacy Policy"
 msgid "Impressum"
 msgstr "Legal Notice"
 
-msgid "SPCast Werbebanner"
-msgstr "SPCast Advertising Banner"
+msgid "STREAMPANEL Werbebanner"
+msgstr "STREAMPANEL Advertising Banner"
+
 
 msgid "Anleitung"
 msgstr "Instructions"

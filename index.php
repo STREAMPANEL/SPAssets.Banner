@@ -168,8 +168,8 @@ $defaultFormat = 'webp';
 // SEO Title and Meta Description
 $pageTitle       = t('Banner Vorschau') . ' | Streampanel';
 $metaDescription = $language === 'de'
-    ? 'SPCast Werbebanner und Grafiken von Streampanel zum Einbinden. Finden Sie offizielle Bannersets in verschiedenen Formaten.'
-    : 'SPCast promotional banners and graphics from Streampanel for integration. Find official banner sets in different formats.';
+    ? 'STREAMPANEL Werbebanner und Grafiken von Streampanel zum Einbinden. Finden Sie offizielle Bannersets in verschiedenen Formaten.'
+    : 'STREAMPANEL promotional banners and graphics from Streampanel for integration. Find official banner sets in different formats.';
 
 $ogImageFile = null;
 if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
@@ -249,15 +249,14 @@ if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
     <!-- End Matomo Tag Manager -->
 </head>
 
-
 <body>
 
     <div class="container">
         <!-- Header & Branding -->
         <header>
             <div class="logo-container">
-                <h1><?= htmlspecialchars(t('Banner Vorschau')) ?></h1>
-                <div class="logo-subtitle">SPCast Official Branding Kit</div>
+                <h1>STREAMPANEL Official Branding Kit</h1>
+                <div class="logo-subtitle"><?= htmlspecialchars(t('Banner Vorschau')) ?></div>
             </div>
 
             <!-- Header Actions: Language Selector & Help Button -->
@@ -353,11 +352,11 @@ if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
 
                         foreach ($imagesBySize[$sz] as $img):
                             $imgUrl    = htmlspecialchars($imageUrlBase . $img['file']);
-                            $embedCode = htmlspecialchars('<img src="' . $imageUrlBase . $img['file'] . '" alt="' . t('SPCast Werbebanner') . '">');
+                            $embedCode = htmlspecialchars('<img src="' . $imageUrlBase . $img['file'] . '" alt="' . t('STREAMPANEL Werbebanner') . '">');
                             ?>
                             <div class="card" data-ext="<?= htmlspecialchars($img['ext']) ?>" style="max-width: <?= $cardMaxWidth ?>px;">
                                 <div class="image-container">
-                                    <img src="<?= $imgUrl ?>" alt="<?= htmlspecialchars(t('SPCast Werbebanner')) ?> <?= htmlspecialchars($sz) ?>" data-size="<?= htmlspecialchars($sz) ?>" loading="lazy">
+                                    <img src="<?= $imgUrl ?>" alt="<?= htmlspecialchars(t('STREAMPANEL Werbebanner')) ?> <?= htmlspecialchars($sz) ?>" data-size="<?= htmlspecialchars($sz) ?>" loading="lazy">
                                 </div>
                                 <button class="btn-copy" data-code="<?= $embedCode ?>" data-copied-text="<?= htmlspecialchars(t('Kopiert!')) ?>"
                                     id="copy-btn-<?= htmlspecialchars(str_replace('.', '-', $img['file'])) ?>">
@@ -373,6 +372,7 @@ if (! empty($sizes) && ! empty($imagesBySize[$sizes[0]])) {
                     </section>
                 <?php endforeach; ?>
             <?php else: ?>
+ ?>
 
                 <div class="empty-state">
                     <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

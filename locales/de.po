@@ -34,8 +34,9 @@ msgstr "Datenschutz"
 msgid "Impressum"
 msgstr "Impressum"
 
-msgid "SPCast Werbebanner"
-msgstr "SPCast Werbebanner"
+msgid "STREAMPANEL Werbebanner"
+msgstr "STREAMPANEL Werbebanner"
+
 
 msgid "Anleitung"
 msgstr "Anleitung"
